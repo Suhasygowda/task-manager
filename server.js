@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const cron = require('node-cron');
 const { sendTaskReminders, sendOverdueTaskReminders } = require('./controllers/emailController');
+const path = require("path");
 
 dotenv.config();
 
@@ -17,13 +18,15 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Serve static files
-app.use(express.static('public'));
+// Serve React build
+app.use(express.static(path.join(__dirname, "public")));
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/tasks', require('./routes/tasks'));
-app
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "public", "index.html"));
+});
 // Schedule email reminders
 // Run every hour to check for tasks due today
 cron.schedule('0 * * * *', () => {
