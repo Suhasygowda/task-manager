@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/tasks', require('./routes/tasks'));
 app.get("*name", (req, res) => {
-    res.sendFile(path.join(__dirname, '../public/index.html'));
+    res.sendFile(path.join(__dirname, "public", "index.html"));
 });
 // Schedule email reminders
 // Run every hour to check for tasks due today
